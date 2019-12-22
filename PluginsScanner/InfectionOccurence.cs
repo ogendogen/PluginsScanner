@@ -6,6 +6,7 @@ namespace PluginsScanner
 {
     public class InfectionOccurence
     {
-        public string MyProperty { get; set; }
+        public string FoundString { get; set; }
+        public int LineNumber { get; set; }
     }
 }
