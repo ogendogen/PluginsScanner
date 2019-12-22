@@ -10,7 +10,7 @@ namespace PluginsScanner
 	{
 		static void Main()
 		{
-			string filesDirectory = @"C:/users/robertt/desktop/files";
+			string filesDirectory = @"D:/files";
 			string filesType = "*.memory";
 			string[] lookupStrings = new string[3] {
 				"amxmodx",
@@ -34,11 +34,10 @@ namespace PluginsScanner
 
 				if (infectionOccurences.Count > 0)
 				{
-					var foundLookedUpStrings = infectionOccurences.Distinct().Select(infection => infection.FoundString);
-					foreach (var foundString in foundLookedUpStrings)
+					foreach (var lookupString in lookupStrings)
 					{
-						var infectionsWithString = infectionOccurences.Where(infection => infection.FoundString == foundString);
-						Console.WriteLine($"Results of '{ foundString }' - { infectionsWithString.Count() } occurences:");
+						var infectionsWithString = infectionOccurences.Where(infection => infection.FoundString.Contains(lookupString));
+						Console.WriteLine($"Results of '{ lookupString }' - { infectionsWithString.Count() } occurences:");
 						foreach (var infection in infectionsWithString)
 						{
 							Console.WriteLine($"\tFile: { infection.FileName } Line: { infection.LineNumber }");
