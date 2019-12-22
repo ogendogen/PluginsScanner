@@ -7,6 +7,6 @@ namespace PluginsScanner
     public class Plugin
     {
         public string Name { get; set; }
-        public string PluginDump { get; set; }
+        public string[] PluginDump { get; set; }
     }
 }

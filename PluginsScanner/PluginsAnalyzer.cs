@@ -14,8 +14,7 @@ namespace PluginsScanner
         {
             foreach (var plugin in plugins)
             {
-                string[] lines = plugin.PluginDump.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-                string[] foundLines = lines.Where(line => LookupStrings.Any(lookupString => line.Contains(lookupString))).ToArray();
+                string[] foundLines = plugin.PluginDump.Where(line => LookupStrings.Any(lookupString => line.Contains(lookupString))).ToArray();
                 
                 foreach (var foundLine in foundLines)
                 {
