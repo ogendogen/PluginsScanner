@@ -19,6 +19,7 @@ namespace PluginsScanner
                 {
                     yield return new InfectionOccurence
                     {
+                        FileName = plugin.Name,
                         FoundString = foundLine,
                         LineNumber = Array.IndexOf(plugin.PluginDump, foundLine) + 1
                     };
