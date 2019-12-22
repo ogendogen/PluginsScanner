@@ -8,7 +8,6 @@ namespace PluginsScanner
     public class PluginsAnalyzer
     {
         public List<string> LookupStrings { get; set; }
-        public string FilesType { get; set; }
 
         public IEnumerable<InfectionOccurence> AnalyzePlugins(List<Plugin> plugins)
         {
