@@ -7,7 +7,6 @@ namespace PluginsScanner
     public class Plugin
     {
         public string Name { get; set; }
-        public List<InfectionOccurence> InfectionOccurences { get; set; }
         public string PluginDump { get; set; }
     }
 }
