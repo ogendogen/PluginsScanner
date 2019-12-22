@@ -18,7 +18,11 @@ namespace PluginsScanner
                 
                 foreach (var foundLine in foundLines)
                 {
-                    yield return new InfectionOccurence{ FoundString = foundLine, LineNumber = Array.IndexOf(lines, foundLine + 1)};
+                    yield return new InfectionOccurence
+                    {
+                        FoundString = foundLine,
+                        LineNumber = Array.IndexOf(plugin.PluginDump, foundLine) + 1
+                    };
                 }
             }
         }
