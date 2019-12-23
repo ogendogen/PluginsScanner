@@ -8,5 +8,11 @@ namespace PluginsScanner
     {
         public string Name { get; set; }
         public string[] PluginDump { get; set; }
+        public List<InfectionOccurence> InfectionOccurences { get; set; }
+
+        public Plugin()
+        {
+            InfectionOccurences = new List<InfectionOccurence>();
+        }
     }
 }

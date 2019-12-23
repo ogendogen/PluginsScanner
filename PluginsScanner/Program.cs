@@ -28,24 +28,24 @@ namespace PluginsScanner
 					return;
 				}
 
-				List<Plugin> plugins = PluginsReader.GetPluginsFromDirectory(filesDirectory, filesType).ToList();
-				PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer{ LookupStrings = lookupStrings };
-				List<InfectionOccurence> infectionOccurences = pluginsAnalyzer.AnalyzePlugins(plugins).ToList();
-
-				if (infectionOccurences.Count > 0)
+				List<Plugin> scannedPlugins = PluginsScanner.ScanPlugins(filesDirectory, filesType, lookupStrings);
+				if (scannedPlugins.Count > 0)
 				{
 					foreach (var lookupString in lookupStrings)
 					{
-						var infectionsWithString = infectionOccurences.Where(infection => infection.FoundString.Contains(lookupString));
-						Console.WriteLine($"Results of '{ lookupString }' - { infectionsWithString.Count() } occurences:");
-						foreach (var infection in infectionsWithString)
+						var pluginsWithInfections = scannedPlugins.Where(plugin => plugin.InfectionOccurences.Any(infection => infection.FoundString.Contains(lookupString))).ToList();
+						Console.WriteLine($"Results of '{ lookupString }' - { pluginsWithInfections.Count() } occurences:");
+						foreach (var plugin in pluginsWithInfections)
 						{
-							Console.WriteLine($"\tFile: { infection.FileName } Line: { infection.LineNumber }");
+							foreach (var infection in plugin.InfectionOccurences)
+							{
+								Console.WriteLine($"\tFile: { plugin.Name } Line: { infection.LineNumber }");
+							}
 						}
 						Console.WriteLine("\n");
 					}
 
-					Console.WriteLine($"Found {infectionOccurences.Count} possibly infected plugins.");
+					Console.WriteLine($"Found {scannedPlugins.Count} possibly infected plugins.");
 				}
 				else
 				{

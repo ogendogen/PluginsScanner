@@ -9,7 +9,7 @@ namespace PluginsScanner
     {
         public string[] LookupStrings { get; set; }
 
-        public IEnumerable<InfectionOccurence> AnalyzePlugins(List<Plugin> plugins)
+        public List<Plugin> AnalyzePlugins(List<Plugin> plugins)
         {
             foreach (var plugin in plugins)
             {
@@ -17,14 +17,15 @@ namespace PluginsScanner
                 
                 foreach (var foundLine in foundLines)
                 {
-                    yield return new InfectionOccurence
+                    plugin.InfectionOccurences.Add(new InfectionOccurence
                     {
-                        FileName = plugin.Name,
                         FoundString = foundLine,
                         LineNumber = Array.IndexOf(plugin.PluginDump, foundLine) + 1
-                    };
+                    });
                 }
             }
+
+            return plugins;
         }
     }
 }
