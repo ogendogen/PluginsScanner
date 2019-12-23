@@ -3,12 +3,13 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using PluginsScanner;
+using System.Threading.Tasks;
 
 namespace PluginsScanner
 {
 	class Program
 	{
-		static void Main()
+		static async Task Main()
 		{
 			string filesDirectory = @"D:/files";
 			string filesType = "*.memory";
@@ -18,45 +19,39 @@ namespace PluginsScanner
 				"abcdefghijklmnopqrstu"
 			};
 
-			try
-			{
-				if (!Directory.Exists(filesDirectory))
+			var progress = new Progress<string>(value => Console.WriteLine(value));
+			await Task.Run(() => {
+				try
 				{
-					Console.WriteLine($"Directory { filesDirectory } does not exist");
-					Console.ReadLine();
-
-					return;
-				}
-
-				List<Plugin> scannedPlugins = PluginsScanner.ScanPlugins(filesDirectory, filesType, lookupStrings);
-				if (scannedPlugins.Count > 0)
-				{
-					foreach (var lookupString in lookupStrings)
+					List<Plugin> scannedPlugins = PluginsScanner.ScanPlugins(filesDirectory, filesType, lookupStrings, progress);
+					if (scannedPlugins.Count > 0)
 					{
-						var pluginsWithInfections = scannedPlugins.Where(plugin => plugin.InfectionOccurences.Any(infection => infection.FoundString.Contains(lookupString))).ToList();
-						Console.WriteLine($"Results of '{ lookupString }' - { pluginsWithInfections.Count() } occurences:");
-						foreach (var plugin in pluginsWithInfections)
+						foreach (var lookupString in lookupStrings)
 						{
-							foreach (var infection in plugin.InfectionOccurences)
+							var pluginsWithInfections = scannedPlugins.Where(plugin => plugin.InfectionOccurences.Any(infection => infection.FoundString.Contains(lookupString))).ToList();
+							Console.WriteLine($"Results of '{ lookupString }' - { pluginsWithInfections.Count() } occurences:");
+							foreach (var plugin in pluginsWithInfections)
 							{
-								Console.WriteLine($"\tFile: { plugin.Name } Line: { infection.LineNumber }");
+								foreach (var infection in plugin.InfectionOccurences)
+								{
+									Console.WriteLine($"\tFile: { plugin.Name } Line: { infection.LineNumber }");
+								}
 							}
+							Console.WriteLine("\n");
 						}
-						Console.WriteLine("\n");
+
+						Console.WriteLine($"Found {scannedPlugins.Count} possibly infected plugins.");
 					}
-
-					Console.WriteLine($"Found {scannedPlugins.Count} possibly infected plugins.");
+					else
+					{
+						Console.WriteLine("No infections found");
+					}
 				}
-				else
+				catch (Exception e)
 				{
-					Console.WriteLine("No infections found");
+					Console.WriteLine($"Exception occured: {e.Message} ");
 				}
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine($"Exception occured: {e.Message} ");
-			}
-
+			});
 
 			//string[] fileContent;
 			//string fileName;

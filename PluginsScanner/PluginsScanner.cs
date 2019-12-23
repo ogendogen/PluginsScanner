@@ -7,9 +7,9 @@ namespace PluginsScanner
 {
     public static class PluginsScanner
     {
-		public static List<Plugin> ScanPlugins(string filesDirectory, string filesType, string[] lookupStrings)
+		public static List<Plugin> ScanPlugins(string filesDirectory, string filesType, string[] lookupStrings, Progress<string> progress = null)
 		{
-			List<Plugin> plugins = PluginsReader.GetPluginsFromDirectory(filesDirectory, filesType).ToList();
+			List<Plugin> plugins = PluginsReader.GetPluginsFromDirectory(filesDirectory, filesType, progress).ToList();
 			PluginsAnalyzer pluginsAnalyzer = new PluginsAnalyzer { LookupStrings = lookupStrings };
 			List<Plugin> scannedPlugins = pluginsAnalyzer.AnalyzePlugins(plugins).ToList();
 			return scannedPlugins;
