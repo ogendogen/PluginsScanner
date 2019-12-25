@@ -20,36 +20,21 @@ namespace PluginsScanner
 			};
 
 			var progress = new Progress<string>(value => Console.WriteLine(value));
-			await Task.Run(() => {
+
+			await Task.Run(() => 
+			{
 				try
 				{
 					List<Plugin> scannedPlugins = PluginsScanner.ScanPlugins(filesDirectory, filesType, lookupStrings, progress);
-					if (scannedPlugins.Count > 0)
-					{
-						foreach (var lookupString in lookupStrings)
-						{
-							var pluginsWithInfections = scannedPlugins.Where(plugin => plugin.InfectionOccurences.Any(infection => infection.FoundString.Contains(lookupString))).ToList();
-							Console.WriteLine($"Results of '{ lookupString }' - { pluginsWithInfections.Count() } occurences:");
-							foreach (var plugin in pluginsWithInfections)
-							{
-								foreach (var infection in plugin.InfectionOccurences)
-								{
-									Console.WriteLine($"\tFile: { plugin.Name } Line: { infection.LineNumber }");
-								}
-							}
-							Console.WriteLine("\n");
-						}
-
-						Console.WriteLine($"Found {scannedPlugins.Count} possibly infected plugins.");
-					}
-					else
-					{
-						Console.WriteLine("No infections found");
-					}
+					InfectionsReporter.ReportInfections(lookupStrings, scannedPlugins, progress);
 				}
 				catch (Exception e)
 				{
 					Console.WriteLine($"Exception occured: {e.Message} ");
+				}
+				finally
+				{
+					Console.ReadKey();
 				}
 			});
 
