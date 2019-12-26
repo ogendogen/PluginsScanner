@@ -19,7 +19,8 @@ namespace PluginsScanner
 				"abcdefghijklmnopqrstu"
 			};
 
-			var progress = new Progress<string>(value => Console.WriteLine(value));
+			var progressHandler = new Progress<string>(value => Console.WriteLine(value));
+			var progress = (IProgress<string>)progressHandler;
 
 			await Task.Run(() => 
 			{

@@ -7,11 +7,11 @@ namespace PluginsScanner
 {
     public static class PluginsReader
     {
-        public static IEnumerable<Plugin> GetPluginsFromDirectory(string directory, string matchPattern = "*.memory", Progress<string> progress = null)
+        public static IEnumerable<Plugin> GetPluginsFromDirectory(string directory, string matchPattern = "*.memory", IProgress<string> progress = null)
         {
             if (!Directory.Exists(directory))
 			{
-                ((IProgress<string>)progress).Report($"Directory { directory } does not exist");
+                progress.Report($"Directory { directory } does not exist");
 				yield break;
 			}
 
