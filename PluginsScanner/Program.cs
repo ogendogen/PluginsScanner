@@ -19,15 +19,14 @@ namespace PluginsScanner
 				"abcdefghijklmnopqrstu"
 			};
 
-			var progressHandler = new Progress<string>(value => Console.WriteLine(value));
-			var progress = (IProgress<string>)progressHandler;
+			ConsoleProgress<string> consoleProgress = new ConsoleProgress<string>(value => Console.WriteLine(value));
 
 			await Task.Run(() => 
 			{
 				try
 				{
-					List<Plugin> scannedPlugins = PluginsScanner.ScanPlugins(filesDirectory, filesType, lookupStrings, progress);
-					InfectionsReporter.ReportInfections(lookupStrings, scannedPlugins, progress);
+					List<Plugin> scannedPlugins = PluginsScanner.ScanPlugins(filesDirectory, filesType, lookupStrings, consoleProgress);
+					InfectionsReporter.ReportInfections(lookupStrings, scannedPlugins, consoleProgress);
 				}
 				catch (Exception e)
 				{
