@@ -4,11 +4,11 @@ using System.Text;
 
 namespace PluginsScanner
 {
-    public class ConsoleProgress<T> : IProgress<T>
+    public class ProgressReportingSynchronizer<T> : IProgress<T>
     {
         private Action<T> _action;
 
-        public ConsoleProgress(Action<T> action)
+        public ProgressReportingSynchronizer(Action<T> action)
         {
             _action = action;
         }

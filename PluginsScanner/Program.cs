@@ -19,7 +19,7 @@ namespace PluginsScanner
 				"abcdefghijklmnopqrstu"
 			};
 
-			ConsoleProgress<string> consoleProgress = new ConsoleProgress<string>(value => Console.WriteLine(value));
+			ProgressReportingSynchronizer<string> consoleProgress = new ProgressReportingSynchronizer<string>(value => Console.WriteLine(value));
 
 			await Task.Run(() => 
 			{
